@@ -1,6 +1,7 @@
 'use strict';
 ///////////////////////
 //constructor functions and the new operator
+/*
 const Person = function(firstName, birthYear){
   // console.log(this);
 
@@ -14,6 +15,7 @@ const Person = function(firstName, birthYear){
   //   console.log(2037 - this.birthYear);
   // };
 }
+*/
 /*
 const jonas = new Person('Jonas', 1991);
 console.log(jonas);
@@ -252,7 +254,7 @@ console.log(steven.__proto__=== PersonProto);
 const sarah = Object.create(PersonProto);
 sarah.init('Sarah', 1979);
 sarah.calcAge();
-*/
+
 
 //////////////////////////////////////////////////
 //CODING CHALLENGE #2
@@ -289,5 +291,29 @@ ford.accelerate();
 ford.brake();
 
 console.log(ford.speed);
+*/
+//////////////////////////////////////////////
+//Inheritance between "Classes": Constructor Functions
+const Person = function(firstName, birthYear){
+  this.firstName = firstName;
+  this.birthYear = birthYear;
+};
 
+Person.prototype.calcAge = function(){
+  console.log(2037 - this.birthYear);
+};
 
+//typically want to have the same functionality as parent class including additional ones which means we will need to have the same parameters with additional ones
+const Student = function(firstName, birthYear, course){
+  this.firstName = firstName;
+  this.birthYear = birthYear;
+  this.course = course;
+};
+
+Student.prototype.introduce = function(){
+  console.log(`My name is ${this.firstName} and I study ${this.course}.`);
+}
+
+const mike = new Student('Mike', 2020, 'Computer Science');
+console.log(mike);
+mike.introduce();

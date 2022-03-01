@@ -305,8 +305,7 @@ Person.prototype.calcAge = function(){
 
 //typically want to have the same functionality as parent class including additional ones which means we will need to have the same parameters with additional ones
 const Student = function(firstName, birthYear, course){
-  this.firstName = firstName;
-  this.birthYear = birthYear;
+  Person.call(this,firstName, birthYear);
   this.course = course;
 };
 

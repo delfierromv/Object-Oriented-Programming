@@ -350,23 +350,12 @@ Car.prototype.brake = function(){
     console.log(`${this.make} is going at ${this.speed} km/h`);
   }
 
-Car.prototype.speedUs = function(){
-    return this.speed/1.6;
-  };
-
-Car.prototype.speedUs = function(speed){
-    this.speed = speed*1.6;
-  };
-
-
-
 const EV = function(make, speed, charge){
-  Car.call(this, make, speed, charge);
-
+  Car.call(this, make, speed)
   this.charge = charge;
 }
 
-console.dir(Car.prototype)
+//LINKING THE PROTOTYPES
 EV.prototype = Object.create(Car.prototype);
 
 EV.prototype.chargeBattery = function(chargeTo){
@@ -375,8 +364,8 @@ EV.prototype.chargeBattery = function(chargeTo){
 
 EV.prototype.accelerate = function(){
   this.speed+=20;
-  this.charge -=1;
-  console.log(`${this.make} going at ${this.speed}, with a charge of ${this.charge}%`);
+  this.charge --;
+  console.log(`${this.make} going at ${this.speed}km/h, with a charge of ${this.charge}%`);
 };
 
 const car1 = new EV('Tesla',120, 23);
@@ -384,4 +373,6 @@ console.log(car1);
 car1.accelerate();
 console.log(car1);
 car1.brake();
+console.log(car1);
+car1.chargeBattery(90);
 console.log(car1);

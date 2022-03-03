@@ -293,6 +293,7 @@ ford.brake();
 console.log(ford.speed);
 */
 //////////////////////////////////////////////
+/*
 //Inheritance between "Classes": Constructor Functions
 const Person = function(firstName, birthYear){
   this.firstName = firstName;
@@ -376,3 +377,96 @@ car1.brake();
 console.log(car1);
 car1.chargeBattery(90);
 console.log(car1);
+
+
+
+class PersonCl{
+  constructor(fullName, birthYear){
+    this.fullName= fullName;
+    this.birthYear = birthYear;
+  }
+  //INSTANCE METHODS--can be used by any instance as it is being added to the prototype thus allowing the instances to use prototypal inheritance to use these methods.
+  calcAge(){
+    console.log(2037-this.birthYear);
+  }//no comma
+  //all methods that we write in the class (but outside of the constructor) will be on the prototype of the objects and not on the objects themselves
+  greet(){console.log(`Hey ${this.firstName}`)};
+
+  get age(){
+    return 2037 - this.birthYear;
+  };
+
+  //Set a property that already exists--need to use BOTH set and get
+  set fullName(name){
+    console.log(name);
+    if(name.includes(' ')) this._fullName = name;
+    else alert(`${name} is not a full name!`)
+  }
+
+  get fullName(){
+    return this._fullName;
+  }
+
+  //STATIC METHOD--can NOT be used by any instance as it is NOT being added to the prototype thus NOT allowing the instances to use prototypal inheritance for the use of these methods.
+  static hey(){
+    console.log('Hey😇');
+    console.log(this);
+  }
+}
+
+//the keyword 'extends' is how we link the classes
+class StudentCl extends PersonCl {
+  constructor(fullName, birthYear, course){
+    //instead of manually calling the PersonCl function (PersonCl.call(this,fullName, birthYear, course), INSTEAD we call the SUPER FUNCTION..which is basically the constructor function of the parent class)
+    //THIS ALWAYS NEEDS TO HAPPEN FIRST because this is responsible for creating the this keyword in this subclass. so we wouldn't be able to access the this keyword without calling the super function first
+    super(fullName, birthYear)
+    this.course = course;
+    //if we didn't need to use the this keyword, then we wouldn't need to call the super function at all and it would still work.
+  }
+  introduce(){
+    console.log(`My name is ${this.fullName} and I study ${this.course}`);
+  }
+//OVERWRITE THE CALCAGE FUNCTION FOUND IN PERSON PROTOTYPE
+  calcAge(){
+    console.log(`I'm ${2037-this.birthYear} years old, but as a student I feel more like ${2037-this.birthYear +10}`);
+  }
+}
+
+const martha = new StudentCl('Martha Jones', 2012, 'Computer Science');
+console.log(martha);
+martha.introduce()
+martha.calcAge();
+*/
+
+//////////////////////////////////////////////
+//INHERITANCE BETWEEN "CLASSES": OBJECT.CREATE
+
+const PersonProto = {
+  calcAge(){
+    console.log(2037-this.birthYear);
+  },
+
+  init(firstName, birthYear){
+    this.firstName = firstName;
+    this.birthYear = birthYear;
+  }
+};
+//Basically we want to add another prototype in the middle of the chain
+const steven = Object.create(PersonProto);
+
+const StudentProto= Object.create(PersonProto);
+
+StudentProto.init = function(firstName, birthYear, course){
+  PersonProto.init.call(this, firstName, birthYear);
+  this.course = course;
+}
+
+StudentProto.introduce = function(){
+  console.log(`My name is ${this.firstName} and I study ${this.course}`);
+}
+const jay = Object.create(StudentProto);
+jay.init('Jay', 2010, 'Computer Science');
+jay.introduce();
+jay.calcAge();
+
+

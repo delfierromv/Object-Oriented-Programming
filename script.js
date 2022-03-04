@@ -471,32 +471,42 @@ jay.calcAge();
 */
 
 /////////////////////////////////
-//ANOTHER EXAMPLE
+//ANOTHER EXAMPLE--BANKIST ACCOUNT EXAMPLE
 
 class Account{
   constructor(owner, currency, pin){
     this.owner = owner;
     this.currency = currency;
-    this.pin = pin;
-    this.movements = [];
+    //PROTECTED PROPERTY
+    this._pin = pin;
+    //we will protect this data so that no one can accidentally manipulate it by placing an underscore before it..again, this does not actually make the property TRULY private, but this is just a convention.
+    //because the underscore doesn't make it truly private, we instead call it PROTECTED PROPERTY--
+    //you can still access it outside of the class, however, at least your team will know that it is not supposed to be touched outside of the class.
+    this._movements = [];
     this.locale = navigator.language;
 
     console.log(`Thanks for opening an account, ${owner}`);
   }
 //PUBLIC INTERFACE OF OUR OBJECTS
+
+//if we still wanted to give accesss to the movements array from the outside, then we would have to implement a public method for that.
+//this way you can still access the movements, but cannot override them.
+  getMovements(){
+    return this._movements;
+  }
   deposit(val){
-    this.movements.push(val)
+    this._movements.push(val)
   }
 
   withdraw(val){
     this.deposit(-val)
   }
 
-  approveLoan(val){
+  _approveLoan(val){
     return true;
   }
   requestLoan(val){
-    if(this.approveLoan(val)){
+    if(this._approveLoan(val)){
       this.deposit(val);
       console.log(`Loan approved`);
     }
@@ -506,7 +516,7 @@ class Account{
 const acc1 = new Account('Jonas', 'EUR', 1111,);
 console.log(acc1);
 
-
+//We should not be able to manually mess with the movements property so we should encapsulate it.
 // acc1.movements.push(250);
 // acc1.movements.push(-140);
 acc1.deposit(250);
@@ -514,6 +524,14 @@ acc1.withdraw(140)
 acc1.requestLoan(1000)
 //this approve loan method should be an internal method that a regular user should not be able to access-- this is why we need data encapsulation and data privacy.
 acc1.approveLoan(1000);
+console.log(acc1.getMovements());
 console.log(acc1);
 console.log(acc1.pin);
 
+//ENCAPSULATION MEANS TO KEEP SOME PROPERTIES AND METHODS PRIVATE INSIDE THE CLASS SO THAT THEY ARE NOT ACCESSIBLE FROM OUTSIDE THE CLASS. THEN THE REST OF THE METHODS ARE BASICALLY EXPOSED AS A PUBLIC INTERFACE WHICH WE CAN ALSO CALL API !!!!!!!!!!!
+
+//Two reasons why we need encapsulation and data privacy
+//1.prevent code from outside of a class to accidentally manipulate our data inside the class
+//2. When we expose only a small interface, soo a small API consisting only of a few public methods, then we can change all the other internal methods with more confidence because we can be sure that external code does not rely on these private methods, therefore our code will not break when we do internal changes.
+
+//However, JavaScript classes actually do not yet support real data privacy and encapsulation, but we can fake encapsulation by simply using a convention.

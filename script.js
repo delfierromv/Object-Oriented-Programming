@@ -522,10 +522,12 @@ class Account{
   }
   deposit(val){
     this.#movements.push(val)
+    return this;
   }
 
   withdraw(val){
     this.deposit(-val)
+    return this;
   }
 
   
@@ -534,6 +536,7 @@ class Account{
     if(this._approveLoan(val)){
       this.deposit(val);
       console.log(`Loan approved`);
+      return this;
     }
   }
 
@@ -575,3 +578,10 @@ console.log(acc1);
 
 //However, JavaScript classes actually do not yet support real data privacy and encapsulation, but we can fake encapsulation by simply using a convention.
 
+
+////////////////////////////////////////////////
+//CHAINING METHODS
+
+acc1.deposit(300).deposit(500).withdraw(35).requestLoan(25000).withdraw(4000);
+//this will not work because the deposit method is not returning anything explicit so then undefined is returned. chaining deposit after that will mean undefined.deposit(500).etc which will obviously not work. This will only work if within the deposit,withdraw, and requestLoan method, you return the account so you must return "this" which will make the methods chainable.
+console.log(acc1.getMovements());

@@ -475,18 +475,24 @@ jay.calcAge();
 //////////////////////////////////////////////ALSO....
 //ENCAPSULATION: PRIVATE CLASS FIELDS AND METHODS
 
-
 //1. Public fields (ex the movements & locale field)
     //NOTE: think of a field as a property that will be on all instances, but not on the prototype.
 //2. Private fields
-    //NOTE: with private fields you can make it 
-//3. Public methods
-//4. Private methods
+    //NOTE: with private fields you can make it so they are not accessible from the outside.
+//3. Public methods- (public interface)
+//4. Private methods- very useful to hide the implementation details from the outside.
+//(there is also the static version by using the static keyword for the other 4 features above so really there are 8 in total)
+
 class Account{
-  //1. PUBLIC FIELDS
+  //NOTE: Fields have to be outside of any method even including the constructor
+
+  //1. PUBLIC FIELDS- available on instances and not on prototype
   locale = navigator.language;
-  _movements = [];
-  //2. PRIVATE FIELDS
+  // _movements = [];
+
+  //2. PRIVATE FIELDS- available on instances and not on prototype
+  #movements = [];
+  #pin; //since we cannot declare any fields within methods, then in order to make the property PRIVATE, you must declare it outside of the methods before and don't set it to anything so its essentially like creating an empty variable. So in the beginning this will be set to undefined.
 
 
 
@@ -494,7 +500,9 @@ class Account{
     this.owner = owner;
     this.currency = currency;
     //PROTECTED PROPERTY
-    this._pin = pin;
+    // this._pin = pin;
+
+    this.#pin = pin;
     //we will protect this data so that no one can accidentally manipulate it by placing an underscore before it..again, this does not actually make the property TRULY private, but this is just a convention.
     //because the underscore doesn't make it truly private, we instead call it PROTECTED PROPERTY--
     //you can still access it outside of the class, however, at least your team will know that it is not supposed to be touched outside of the class.
@@ -504,30 +512,35 @@ class Account{
     console.log(`Thanks for opening an account, ${owner}`);
   }
 
-  
-//PUBLIC INTERFACE OF OUR OBJECTS
+
+//3. PUBLICE METHODS (PUBLIC INTERFACE OF OUR OBJECTS)
 
 //if we still wanted to give accesss to the movements array from the outside, then we would have to implement a public method for that.
 //this way you can still access the movements, but cannot override them.
   getMovements(){
-    return this._movements;
+    return this.#movements;
   }
   deposit(val){
-    this._movements.push(val)
+    this.#movements.push(val)
   }
 
   withdraw(val){
     this.deposit(-val)
   }
 
-  _approveLoan(val){
-    return true;
-  }
+  
   requestLoan(val){
+    // if(this.#approveLoan(val)){
     if(this._approveLoan(val)){
       this.deposit(val);
       console.log(`Loan approved`);
     }
+  }
+
+  //4. PRIVATE METHODS****************************************
+  // #approveLoan(val){ //PRIVATE METHODS are not yet implemented in browsers. Google chrome recognizes it as a private field so private methods are not available
+  _approveLoan(val){ // so you can only PROTECT the method rather than make it truly private.
+    return true;
   }
 }
 
@@ -546,6 +559,13 @@ acc1.requestLoan(1000)
 console.log(acc1.getMovements());
 console.log(acc1);
 // console.log(acc1.pin);
+// console.log(acc1.#approveLoan(100)); PRIVATE METHODS are not yet implemented in browsers. Google chrome recognizes it as a private field so private methods are not available
+
+// console.log(acc1.#movements) //DOESN'T WORK BECAUSE WE CANNOT ACCESS IT FROM THE OUTSIDE SINCE IT IS A PRIVATE FIELD
+//console.log(acc1.#pin); //DOESN'T WORK BECAUSE WE CANNOT ACCESS IT FROM THE OUTSIDE SINCE IT IS A PRIVATE FIELD
+
+
+
 
 //ENCAPSULATION MEANS TO KEEP SOME PROPERTIES AND METHODS PRIVATE INSIDE THE CLASS SO THAT THEY ARE NOT ACCESSIBLE FROM OUTSIDE THE CLASS. THEN THE REST OF THE METHODS ARE BASICALLY EXPOSED AS A PUBLIC INTERFACE WHICH WE CAN ALSO CALL API !!!!!!!!!!!
 
@@ -554,5 +574,4 @@ console.log(acc1);
 //2. When we expose only a small interface, soo a small API consisting only of a few public methods, then we can change all the other internal methods with more confidence because we can be sure that external code does not rely on these private methods, therefore our code will not break when we do internal changes.
 
 //However, JavaScript classes actually do not yet support real data privacy and encapsulation, but we can fake encapsulation by simply using a convention.
-
 

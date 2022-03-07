@@ -336,37 +336,41 @@ console.dir(Student.prototype.constructor);
 ////////////////////////////////////////////////////////////////////
 //CODING CHALLENGE #3
 
-const Car = function(make, speed){
-  this.make = make;
-  this.speed = speed;
-};
+class CarCl{
+  constructor(make, speed){
+    this.make = make;
+    this.speed = speed;
+  }
 
-Car.prototype.accelerate = function(){
+  accelerate(){
     this.speed += 10;
     console.log(`${this.make} is going at ${this.speed} km/h`);
   }
 
-Car.prototype.brake = function(){
-    this.speed -= 5;
-    console.log(`${this.make} is going at ${this.speed} km/h`);
+  get speedUS(){
+    return this.speed / 1.6;
   }
+  set speedUS(speed){
+    this.speed = speed *1.6
+  }
+}
 
-const EV = function(make, speed, charge){
-  Car.call(this, make, speed)
+const EV= function(make, speed, charge){
+  Car.call(this, make, speed);
   this.charge = charge;
 }
 
-//LINKING THE PROTOTYPES
+//link the prototypes
 EV.prototype = Object.create(Car.prototype);
 
 EV.prototype.chargeBattery = function(chargeTo){
   this.charge = chargeTo;
-}
+};
 
 EV.prototype.accelerate = function(){
-  this.speed+=20;
-  this.charge --;
-  console.log(`${this.make} going at ${this.speed}km/h, with a charge of ${this.charge}%`);
+  this.speed += 20;
+  this.charge--;
+  console.log(`${this.make} is going at ${this.speed} km/h, with a charge of ${this.charge}`);
 };
 
 const car1 = new EV('Tesla',120, 23);
@@ -585,3 +589,43 @@ console.log(acc1);
 acc1.deposit(300).deposit(500).withdraw(35).requestLoan(25000).withdraw(4000);
 //this will not work because the deposit method is not returning anything explicit so then undefined is returned. chaining deposit after that will mean undefined.deposit(500).etc which will obviously not work. This will only work if within the deposit,withdraw, and requestLoan method, you return the account so you must return "this" which will make the methods chainable.
 console.log(acc1.getMovements());
+
+//////////////////////////////////////
+//CODING CHALLENGE #4
+
+class CarCl{
+  constructor(make, speed){
+    this.make = make;
+    this.speed = speed;
+  }
+
+  accelerate(){
+    this.speed += 10;
+    console.log(`${this.make} is going at ${this.speed} km/h`);
+  }
+
+  get speedUS(){
+    return this.speed / 1.6;
+  }
+  set speedUS(speed){
+    this.speed = speed *1.6
+  }
+}
+
+const EV= function(make, speed, charge){
+  Car.call(this, make, speed);
+  this.charge = charge;
+}
+
+//link the prototypes
+EV.prototype = Object.create(Car.prototype);
+
+EV.prototype.chargeBattery = function(chargeTo){
+  this.charge = chargeTo;
+};
+
+EV.prototype.accelerate = function(){
+  this.speed += 20;
+  this.charge--;
+  console.log(`${this.make} is going at ${this.speed} km/h, with a charge of ${this.charge}`);
+};

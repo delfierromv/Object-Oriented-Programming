@@ -603,7 +603,11 @@ class CarCl{
     this.speed += 10;
     console.log(`${this.make} is going at ${this.speed} km/h`);
   }
-
+  brake(){
+    this.speed -= 5;
+    console.log(`${this.make} is going at ${this.speed} km/h`);
+    return this;
+  }
   get speedUS(){
     return this.speed / 1.6;
   }
@@ -612,20 +616,30 @@ class CarCl{
   }
 }
 
-const EV= function(make, speed, charge){
-  Car.call(this, make, speed);
-  this.charge = charge;
+class EVCl extends CarCl{
+  #charge;
+  constructor(make,speed,charge){
+    super(make,speed);
+    this.#charge = charge;
+  }
+  chargeBattery = function(chargeTo){
+    this.#charge = chargeTo;
+    return this;
+  }
+  accelerate = function(){
+    this.speed += 20;
+    this.#charge--;
+    console.log(`${this.make} is going at ${this.speed} km/h, with a charge of ${this.#charge}%`);
+    return this;
+  };
+
 }
 
-//link the prototypes
-EV.prototype = Object.create(Car.prototype);
+const rivian = new EVCl('Rivian', 120, 23)
+console.log(rivian);
+rivian.chargeBattery(50);
+console.log(rivian);
+rivian.accelerate().brake().accelerate().accelerate().accelerate().chargeBattery(100);
+console.log(rivian);
 
-EV.prototype.chargeBattery = function(chargeTo){
-  this.charge = chargeTo;
-};
-
-EV.prototype.accelerate = function(){
-  this.speed += 20;
-  this.charge--;
-  console.log(`${this.make} is going at ${this.speed} km/h, with a charge of ${this.charge}`);
-};
+console.log(rivian.speedUS);

@@ -293,7 +293,7 @@ ford.brake();
 console.log(ford.speed);
 */
 //////////////////////////////////////////////
-/*
+
 //Inheritance between "Classes": Constructor Functions
 const Person = function(firstName, birthYear){
   this.firstName = firstName;
@@ -332,7 +332,7 @@ console.log(mike instanceof Object);
 
 Student.prototype.constructor = Student;
 console.dir(Student.prototype.constructor);
-
+/*
 ////////////////////////////////////////////////////////////////////
 //CODING CHALLENGE #3
 
@@ -486,7 +486,7 @@ jay.calcAge();
 //3. Public methods- (public interface)
 //4. Private methods- very useful to hide the implementation details from the outside.
 //(there is also the static version by using the static keyword for the other 4 features above so really there are 8 in total)
-
+/*
 class Account{
   //NOTE: Fields have to be outside of any method even including the constructor
 
@@ -643,3 +643,4 @@ rivian.accelerate().brake().accelerate().accelerate().accelerate().chargeBattery
 console.log(rivian);
 
 console.log(rivian.speedUS);
+*/
